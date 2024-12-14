@@ -1,0 +1,34 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Clonar el repositorio
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # 2. Iniciar sesión en Docker Hub
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    # 3. Construir y etiquetar la imagen
+    - name: Build and tag Docker image
+      run: |
+        docker build -t henryjulian/gitops:latest .
+        docker tag henryjulian/gitops:latest henryjulian/gitops:${{ github.sha }}
+
+    # 4. Subir la imagen a Docker Hub
+    - name: Push Docker image
+      run: |
+        docker push henryjulian/gitops:latest
+        docker push henryjulian/gitops:${{ github.sha }}
