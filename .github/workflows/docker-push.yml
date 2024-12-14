@@ -24,11 +24,11 @@ jobs:
     # 3. Construir y etiquetar la imagen
     - name: Build and tag Docker image
       run: |
-        docker build -t henryjulian/gitops-hola-mundo:latest .
-        docker tag henryjulian/gitops-hola-mundo:latest henryjulian/gitops-hola-mundo:${{ github.sha }}
+        docker build -t henryjulian/gitops:latest .
+        docker tag henryjulian/gitops:latest henryjulian/gitops:${{ github.sha }}
 
     # 4. Subir la imagen a Docker Hub
     - name: Push Docker image
       run: |
-        docker push henryjulian/gitops-hola-mundo:latest
-        docker push henryjulian/gitops-hola-mundo:${{ github.sha }}
+        docker push henryjulian/gitops:latest
+        docker push henryjulian/gitops:${{ github.sha }}
